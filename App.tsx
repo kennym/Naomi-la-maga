@@ -28,6 +28,7 @@ const cards: Card[] = generateCards();
 
 export default function App() {
   const { width } = useWindowDimensions();
+  const isSmallScreen = width < 500;
 
   // --- Responsive Grid Calculation ---
   const containerPadding: number = 10;
@@ -204,7 +205,7 @@ export default function App() {
                 <TouchableOpacity onPress={toggleAutoScroll} style={styles.controlButton}>
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
                         <Ionicons name={autoScrollEnabled ? "pause-circle" : "play-circle"} size={28} color="#EADFFF" />
-                        <Text style={styles.autoScrollText}>Autoscroll {autoScrollEnabled ? 'on' : 'off'}</Text>
+                        {!isSmallScreen && <Text style={styles.autoScrollText}>Autoscroll {autoScrollEnabled ? 'on' : 'off'}</Text>}
                     </View>
                 </TouchableOpacity>
             )}
@@ -218,13 +219,13 @@ export default function App() {
             {i18n.t('step_counter', { current: step + 1, total: cards.length })}
           </Text>
         </View>
-        <View style={styles.header}>
-          <MaterialCommunityIcons name="crystal-ball" size={80} color="#C792EA" style={styles.logo} />
-          <Text style={styles.title}>{i18n.t('title')}</Text>
-          <Text style={styles.instructions}>
+        <View style={[styles.header, isSmallScreen && { marginBottom: 10 }]}>
+          <MaterialCommunityIcons name="crystal-ball" size={isSmallScreen ? 50 : 80} color="#C792EA" style={styles.logo} />
+          <Text style={[styles.title, isSmallScreen && { fontSize: 26 }]}>{i18n.t('title')}</Text>
+          <Text style={[styles.instructions, isSmallScreen && { fontSize: 16 }]}>
             {i18n.t('instructions_1')}
           </Text>
-          <Text style={styles.instructions}>
+          <Text style={[styles.instructions, isSmallScreen && { fontSize: 16 }]}>
             {i18n.t('instructions_2')}
           </Text>
         </View>
