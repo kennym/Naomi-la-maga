@@ -1,0 +1,10 @@
+{
+  "title": "Naomi the Magic One",
+  "instructions_1": "Think of a number from 1 to 100.",
+  "instructions_2": "Is your number on this card?",
+  "yes": "Yes",
+  "no": "No",
+  "finished_title": "The Magic is Done!",
+  "result_text": "The number you thought of is...",
+  "play_again": "Play Again"
+} 

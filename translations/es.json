@@ -1,0 +1,10 @@
+{
+  "title": "Naomi la Maga",
+  "instructions_1": "Piensa en un número del 1 al 100.",
+  "instructions_2": "¿Tu número está en esta tarjeta?",
+  "yes": "Sí",
+  "no": "No",
+  "finished_title": "¡La Magia está hecha!",
+  "result_text": "El número que pensaste es...",
+  "play_again": "Jugar de Nuevo"
+} 
