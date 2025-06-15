@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Button, SafeAreaView, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import i18n from './i18n'; // Import the i18n config
 
 const MAX_NUMBER: number = 100;
@@ -60,6 +60,21 @@ export default function App() {
   };
 
   if (isFinished) {
+    if (calculatedNumber > MAX_NUMBER || calculatedNumber === 0) {
+      return (
+        <SafeAreaView style={styles.container}>
+          <View style={styles.centerContent}>
+            <MaterialCommunityIcons name="alert-circle-outline" size={80} color="#FF6347" style={styles.logo} />
+            <Text style={[styles.title, { textAlign: 'center' }]}>{i18n.t('error_title')}</Text>
+            <Text style={[styles.resultText, { textAlign: 'center' }]}>{i18n.t('error_text')}</Text>
+            <TouchableOpacity style={styles.button} onPress={restartGame}>
+              <Text style={styles.buttonText}>{i18n.t('play_again')}</Text>
+            </TouchableOpacity>
+          </View>
+        </SafeAreaView>
+      );
+    }
+
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.centerContent}>
@@ -78,6 +93,18 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.topBar}>
+        {step > 0 ? (
+          <TouchableOpacity onPress={restartGame} style={styles.restartButton}>
+            <Ionicons name="refresh" size={24} color="#4B0082" />
+          </TouchableOpacity>
+        ) : (
+          <View style={styles.restartButton} /> // Empty view to maintain alignment
+        )}
+        <Text style={styles.stepCounter}>
+          {i18n.t('step_counter', { current: step + 1, total: cards.length })}
+        </Text>
+      </View>
       <View style={styles.header}>
         <MaterialCommunityIcons name="crystal-ball" size={80} color="#4B0082" style={styles.logo} />
         <Text style={styles.title}>{i18n.t('title')}</Text>
@@ -126,13 +153,29 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF0F5', // Lavender Blush background
     padding: 10,
   },
+  topBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    marginTop: 10,
+  },
+  restartButton: {
+    padding: 5,
+    width: 34, // to match the icon size + padding
+  },
+  stepCounter: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#4B0082',
+  },
   centerContent: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
   header: {
-    marginTop: 20, // Reduced margin to accommodate logo
+    marginTop: 10, // Reduced margin to accommodate top bar
     marginBottom: 20,
     alignItems: 'center',
   },
@@ -200,6 +243,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: '#6A5ACD', // Slate Blue
     marginBottom: 20,
+    textAlign: 'center',
   },
   finalNumber: {
     fontSize: 80,
