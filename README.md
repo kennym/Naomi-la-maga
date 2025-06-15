@@ -21,7 +21,7 @@ The "magic" behind this game lies in the binary representation of numbers. Here'
 
 4.  **The Final Reveal**: The game simply adds up the values of the cards for which you answered "Yes". Following our example, if you said "Yes" only to the cards for 1, 4, and 8, the game calculates `1 + 4 + 8 = 13` and "magically" guesses your number.
 
-It's a classic mathematical trick dressed up as magic!
+It's a classic mathematical trick dressed up as magic! You can see exactly how this logic is implemented in the [`lib/game.ts`](./lib/game.ts) file.
 
 ## ✨ Features
 

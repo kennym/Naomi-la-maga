@@ -1,41 +1,10 @@
 import React, { useState, useEffect, useRef, useReducer } from 'react';
 import { ScrollView, Platform, useWindowDimensions, LayoutChangeEvent, Linking } from 'react-native';
-import { cards, MAX_NUMBER } from './constants';
+import { MAX_NUMBER } from './constants';
 import GameScreen from './components/GameScreen';
 import ResultScreen from './components/ResultScreen';
 import ErrorScreen from './components/ErrorScreen';
-
-const initialState = {
-  step: 0,
-  calculatedNumber: 0,
-  isFinished: false,
-};
-
-function gameReducer(state: typeof initialState, action: { type: string }) {
-  switch (action.type) {
-    case 'ANSWER_YES': {
-      const isFinished = state.step === cards.length - 1;
-      return {
-        ...state,
-        calculatedNumber: state.calculatedNumber + cards[state.step].value,
-        step: isFinished ? state.step : state.step + 1,
-        isFinished,
-      };
-    }
-    case 'ANSWER_NO': {
-      const isFinished = state.step === cards.length - 1;
-      return {
-        ...state,
-        step: isFinished ? state.step : state.step + 1,
-        isFinished,
-      };
-    }
-    case 'RESTART':
-      return initialState;
-    default:
-      return state;
-  }
-}
+import { gameReducer, initialState } from './lib/game';
 
 export default function App() {
   const { width } = useWindowDimensions();
