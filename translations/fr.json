@@ -1,7 +1,7 @@
 {
     "title": "Naomi la Magicienne",
-    "instructions_1": "Pensez à un nombre entre 1 et 100.",
-    "instructions_2": "Votre numéro est-il sur cette carte ?",
+    "instructions_1": "Pensez à un nombre entre 1 et 100. Je vais essayer de le deviner.",
+    "instructions_2": "Voyez-vous votre numéro ci-dessous ?",
     "yes": "Oui",
     "no": "Non",
     "step_counter": "Étape {{current}} sur {{total}}",

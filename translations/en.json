@@ -1,7 +1,7 @@
 {
   "title": "Naomi the Magic One",
-  "instructions_1": "Think of a number between 1 and 100.",
-  "instructions_2": "Is your number on this card?",
+  "instructions_1": "Think of a number between 1 and 100. I will try to guess it.",
+  "instructions_2": "Can you see your number below?",
   "yes": "Yes",
   "no": "No",
   "finished_title": "Your Number Is...",

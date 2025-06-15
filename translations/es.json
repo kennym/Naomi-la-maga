@@ -1,7 +1,7 @@
 {
-  "title": "Naomi la Maga",
-  "instructions_1": "Piensa en un número entre 1 y 100.",
-  "instructions_2": "¿Está tu número en esta carta?",
+  "title": "Naomi La Maga",
+  "instructions_1": "Piensa en un número entre 1 y 100. Intentaré adivinarlo.",
+  "instructions_2": "¿Puedes ver tu número abajo?",
   "yes": "Sí",
   "no": "No",
   "finished_title": "Tu número es...",
