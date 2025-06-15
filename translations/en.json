@@ -4,11 +4,12 @@
   "instructions_2": "Is your number on this card?",
   "yes": "Yes",
   "no": "No",
-  "finished_title": "Your number is...",
-  "result_text": "The magic is complete!",
+  "finished_title": "Your Number Is...",
+  "result_text": "The magic has revealed your number:",
   "play_again": "Play Again",
   "step_counter": "Step {{current}} of {{total}}",
-  "error_title": "Something went wrong...",
-  "error_text": "I couldn't guess your number. Please try again!",
-  "disable_autoscroll_tip": "Click here to toggle auto-scrolling"
+  "error_title": "Oops! Something's Wrong",
+  "error_text": "I couldn't guess your number. Please double-check your answers and try again.",
+  "disable_autoscroll_tip": "Click here to toggle auto-scrolling",
+  "restart": "Restart"
 } 

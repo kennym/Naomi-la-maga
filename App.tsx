@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, Button, SafeAreaView, ScrollView, TouchableOpacity, Dimensions, Platform, useWindowDimensions, LayoutChangeEvent } from 'react-native';
-import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
+import { StyleSheet, Text, View, Button, SafeAreaView, ScrollView, TouchableOpacity, Dimensions, Platform, useWindowDimensions, LayoutChangeEvent, Linking } from 'react-native';
+import { MaterialCommunityIcons, Ionicons, AntDesign } from '@expo/vector-icons';
 import i18n from './i18n'; // Import the i18n config
 import MagicalBackground from './MagicalBackground';
 
@@ -205,19 +205,24 @@ export default function App() {
                 <TouchableOpacity onPress={toggleAutoScroll} style={styles.controlButton}>
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
                         <Ionicons name={autoScrollEnabled ? "pause-circle" : "play-circle"} size={28} color="#EADFFF" />
-                        {!isSmallScreen && <Text style={styles.autoScrollText}>Autoscroll {autoScrollEnabled ? 'on' : 'off'}</Text>}
+                        {!isSmallScreen && <Text style={styles.controlButtonText}>Autoscroll {autoScrollEnabled ? 'on' : 'off'}</Text>}
                     </View>
                 </TouchableOpacity>
             )}
             {step > 0 && (
               <TouchableOpacity onPress={restartGame} style={styles.controlButton}>
-                <Ionicons name="refresh" size={28} color="#EADFFF" />
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Ionicons name="refresh" size={28} color="#EADFFF" />
+                  {!isSmallScreen && <Text style={styles.controlButtonText}>{i18n.t('restart')}</Text>}
+                </View>
               </TouchableOpacity>
             )}
           </View>
-          <Text style={styles.stepCounter}>
-            {i18n.t('step_counter', { current: step + 1, total: cards.length })}
-          </Text>
+          <View style={styles.topRightControls}>
+            <TouchableOpacity onPress={() => Linking.openURL('https://github.com/kennym/Naomi-la-maga')} style={styles.controlButton}>
+              <AntDesign name="github" size={28} color="#EADFFF" />
+            </TouchableOpacity>
+          </View>
         </View>
         <View style={[styles.header, isSmallScreen && { marginBottom: 10 }]}>
           <MaterialCommunityIcons name="crystal-ball" size={isSmallScreen ? 50 : 80} color="#C792EA" style={styles.logo} />
@@ -257,13 +262,18 @@ export default function App() {
           </ScrollView>
         </View>
 
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={() => handleAnswer(true)}>
-            <Text style={styles.buttonText}>{i18n.t('yes')}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => handleAnswer(false)}>
-            <Text style={styles.buttonText}>{i18n.t('no')}</Text>
-          </TouchableOpacity>
+        <View style={styles.bottomActions}>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.button} onPress={() => handleAnswer(true)}>
+              <Text style={styles.buttonText}>{i18n.t('yes')}</Text>
+            </TouchableOpacity>
+            <Text style={styles.stepCounter}>
+              {i18n.t('step_counter', { current: step + 1, total: cards.length })}
+            </Text>
+            <TouchableOpacity style={styles.button} onPress={() => handleAnswer(false)}>
+              <Text style={styles.buttonText}>{i18n.t('no')}</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </SafeAreaView>
@@ -304,14 +314,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  topRightControls: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   controlButton: {
     padding: 5,
     marginRight: 10,
   },
   stepCounter: {
-    fontSize: 16,
-    fontWeight: 'bold',
+    fontSize: 14,
+    fontWeight: '400',
     color: '#EADFFF',
+    opacity: 0.8,
   },
   centerContent: {
     flex: 1,
@@ -338,7 +353,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 5,
   },
-  autoScrollText: {
+  controlButtonText: {
     color: '#EADFFF',
     marginLeft: 8,
     fontSize: 16
@@ -368,13 +383,16 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#4B0082', // Indigo for numbers
   },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around', // Space out buttons
-    alignItems: 'center',
+  bottomActions: {
     paddingVertical: 20,
     borderTopWidth: 1,
     borderTopColor: '#E6E6FA',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around', // Space out buttons
+    width: '100%',
+    alignItems: 'center',
   },
   button: {
     backgroundColor: '#FF69B4', // Hot Pink for buttons

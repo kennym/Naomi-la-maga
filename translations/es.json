@@ -9,5 +9,6 @@
   "play_again": "Jugar de Nuevo",
   "step_counter": "Paso {{current}} de {{total}}",
   "error_title": "¡Ups!",
-  "error_text": "Parece que hubo un error en tus respuestas. ¡Por favor, inténtalo de nuevo!"
+  "error_text": "Parece que hubo un error en tus respuestas. ¡Por favor, inténtalo de nuevo!",
+  "restart": "Reiniciar"
 } 

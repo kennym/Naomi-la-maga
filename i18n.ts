@@ -4,6 +4,7 @@ import { I18n } from 'i18n-js';
 // Import all the translations
 import en from './translations/en.json';
 import es from './translations/es.json';
+import fr from './translations/fr.json';
 
 const i18n = new I18n();
 
@@ -11,6 +12,7 @@ const i18n = new I18n();
 i18n.translations = {
   en,
   es,
+  fr,
 };
 
 // Set the locale once at the beginning of your app.
