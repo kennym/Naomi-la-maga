@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "naomi-la-maga",
+    "name": "Naomi La Maga",
     "slug": "naomi-la-maga",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -25,6 +25,7 @@
       "edgeToEdgeEnabled": true
     },
     "web": {
+      "name": "Naomi La Maga",
       "favicon": "./assets/web/favicon.png"
     },
     "plugins": [

@@ -1,8 +1,8 @@
-# Naomi la Maga
+# Naomi La Maga
 
 ![Naomi la Maga Game Preview](./assets/preview.jpeg)
 
-Welcome to "Naomi la Maga," a fun and engaging number guessing game built with React Native and Expo.
+Welcome to "Naomi La Maga," a fun and engaging number guessing game built with React Native and Expo.
 
 ## 🎮 How to Play
 
