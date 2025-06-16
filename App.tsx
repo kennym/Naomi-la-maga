@@ -4,7 +4,7 @@ import { MAX_NUMBER } from './constants';
 import GameScreen from './components/GameScreen';
 import ResultScreen from './components/ResultScreen';
 import ErrorScreen from './components/ErrorScreen';
-import { gameReducer, initialState } from './lib/game';
+import { gameReducer, createInitialState } from './lib/game';
 
 export default function App() {
   const { width } = useWindowDimensions();
@@ -19,8 +19,8 @@ export default function App() {
   const availableWidth: number = effectiveWidth - (containerPadding * 2);
   const boxSize: number = (availableWidth / numColumns) - (margin * 2);
 
-  const [state, dispatch] = useReducer(gameReducer, initialState);
-  const { step, calculatedNumber, isFinished } = state;
+  const [state, dispatch] = useReducer(gameReducer, undefined, createInitialState);
+  const { step, calculatedNumber, isFinished, cards } = state;
 
   const [scrollViewHeight, setScrollViewHeight] = useState(0);
   const [contentHeight, setContentHeight] = useState(0);
@@ -129,6 +129,7 @@ export default function App() {
   return (
     <GameScreen
       step={step}
+      cards={cards}
       isSmallScreen={isSmallScreen}
       autoScrollEnabled={autoScrollEnabled}
       scrollViewRef={scrollViewRef}

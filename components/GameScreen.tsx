@@ -4,10 +4,11 @@ import { MaterialCommunityIcons, Ionicons, AntDesign } from '@expo/vector-icons'
 import i18n from '../i18n';
 import MagicalBackground from '../MagicalBackground';
 import { commonStyles } from './styles';
-import { Card, cards } from '../constants';
+import { Card } from '../constants';
 
 interface GameScreenProps {
   step: number;
+  cards: Card[];
   isSmallScreen: boolean;
   autoScrollEnabled: boolean;
   scrollViewRef: React.RefObject<ScrollView | null>;
@@ -24,6 +25,7 @@ interface GameScreenProps {
 const GameScreen: React.FC<GameScreenProps> = (props) => {
     const {
         step,
+        cards,
         isSmallScreen,
         autoScrollEnabled,
         scrollViewRef,

@@ -3,31 +3,52 @@
  * The "magic" of the game is based on the binary representation of numbers.
  *
  * @description
- * The game works by cleverly using powers of two. Here's the breakdown:
- * 1.  **Binary Representation**: Every number can be uniquely represented as a sum of powers of two.
- *     For example, the number 13 is 8 + 4 + 1, which in binary is `1101`.
+ * The game works by cleverly using powers of two. To make it more mysterious, the game randomly
+ * chooses between two "magic" variants each time it starts:
  *
- * 2.  **Magic Cards**: The game presents a series of cards. Each card corresponds to a power of two
- *     (1, 2, 4, 8, 16, 32, 64). A number is included on a card if its binary form has a "1"
- *     in the position corresponding to that card's power of two.
+ * 1.  **Standard Variant**:
+ *     -   **Binary Representation**: Every number is a unique sum of powers of two (e.g., 13 = 8 + 4 + 1).
+ *     -   **Magic Cards**: Each card represents a power of two (1, 2, 4, 8, ...). A number appears on a card if its binary form includes that power of two.
+ *     -   **The Reveal**: The game sums the values of the cards you say "Yes" to, revealing your number.
  *
- * 3.  **Deducing the Number**: When you answer "Yes" to a card, you are confirming that the
- *     corresponding power of two is part of your number's binary sum. The game adds that
- *     card's value to a running total. After all cards are shown, this total will be your secret number.
+ * 2.  **Inverted Variant**:
+ *     -   **The Trick**: This variant works with a "secret" number: `(101 - your number)`.
+ *     -   **Magic Cards**: The cards are generated based on the bits of this secret number. To you, the cards look completely different.
+ *     -   **The Reveal**: The game sums the values for your "Yes" answers to find the secret number (e.g., 88). It then calculates `101 - 88` to reveal your original number, 13.
+ *
+ * This dual-variant approach ensures the card patterns are not easily recognizable, enhancing the magic.
  */
-import { cards } from '../constants';
+import { generateCards, Card, GameVariant, MAX_NUMBER } from '../constants';
+
+export interface GameState {
+  /** The current card index being shown, from 0 to 6. */
+  step: number;
+  /** The running total of the values of the cards the user has answered "Yes" to. */
+  calculatedNumber: number;
+  /** A flag to indicate if the game has finished all steps. */
+  isFinished: boolean;
+  /** The current game variant ('standard' or 'inverted'). */
+  variant: GameVariant;
+  /** The set of cards being used for the current game round. */
+  cards: Card[];
+}
 
 /**
- * The initial state for the game.
+ * Creates the initial state for a new game.
+ * It randomly selects a game variant ('standard' or 'inverted') and generates the corresponding cards.
+ * @returns The initial state for a new game.
  */
-export const initialState = {
-  /** The current card index being shown, from 0 to 6. */
-  step: 0,
-  /** The running total of the values of the cards the user has answered "Yes" to. */
-  calculatedNumber: 0,
-  /** A flag to indicate if the game has finished all steps. */
-  isFinished: false,
-};
+export function createInitialState(): GameState {
+  const variant: GameVariant = Math.random() < 0.5 ? 'standard' : 'inverted';
+  const cards = generateCards(variant);
+  return {
+    step: 0,
+    calculatedNumber: 0,
+    isFinished: false,
+    variant,
+    cards,
+  };
+}
 
 /**
  * The game's state machine, which handles all state transitions based on user actions.
@@ -35,31 +56,48 @@ export const initialState = {
  * @param action The action dispatched by the user.
  * @returns The new state of the game.
  */
-export function gameReducer(state: typeof initialState, action: { type: string }) {
+export function gameReducer(state: GameState, action: { type: string }): GameState {
   switch (action.type) {
     case 'ANSWER_YES': {
-      const isFinished = state.step === cards.length - 1;
-      return {
-        ...state,
-        // This is the core of the "magic". We add the value of the current card (a power of two)
-        // to our running total.
-        calculatedNumber: state.calculatedNumber + cards[state.step].value,
-        step: isFinished ? state.step : state.step + 1,
-        isFinished,
-      };
+      const newCalculatedNumber = state.calculatedNumber + state.cards[state.step].value;
+      if (state.step < state.cards.length - 1) {
+        return {
+          ...state,
+          calculatedNumber: newCalculatedNumber,
+          step: state.step + 1,
+        };
+      } else {
+        // This is the final step. We calculate the final sum.
+        const finalSum = newCalculatedNumber;
+        // If the game is in the 'inverted' variant, we subtract the sum from (MAX_NUMBER + 1)
+        // to get the original number. Otherwise, the sum is the number.
+        const finalNumber = state.variant === 'inverted' ? (MAX_NUMBER + 1) - finalSum : finalSum;
+        return {
+          ...state,
+          calculatedNumber: finalNumber,
+          isFinished: true,
+        };
+      }
     }
     case 'ANSWER_NO': {
-      const isFinished = state.step === cards.length - 1;
-      return {
-        ...state,
-        // If the user says "No", we simply move to the next card without changing the calculated number.
-        step: isFinished ? state.step : state.step + 1,
-        isFinished,
-      };
+      if (state.step < state.cards.length - 1) {
+        return { ...state, step: state.step + 1 };
+      } else {
+        // This is the final step. We have the final sum (which hasn't changed on a "No" answer).
+        const finalSum = state.calculatedNumber;
+        // If the game is in the 'inverted' variant, we subtract the sum from (MAX_NUMBER + 1)
+        // to get the original number. Otherwise, the sum is the number.
+        const finalNumber = state.variant === 'inverted' ? (MAX_NUMBER + 1) - finalSum : finalSum;
+        return {
+          ...state,
+          calculatedNumber: finalNumber,
+          isFinished: true,
+        };
+      }
     }
     case 'RESTART':
-      // Resets the game to its initial state for a new round.
-      return initialState;
+      // Resets the game to its initial state for a new round with a new random variant.
+      return createInitialState();
     default:
       return state;
   }
