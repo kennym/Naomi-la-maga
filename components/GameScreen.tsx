@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, StyleSheet, SafeAreaView, Text, TouchableOpacity, ScrollView, Platform } from 'react-native';
+import { View, StyleSheet, SafeAreaView, Text, TouchableOpacity, Platform } from 'react-native';
 import { MaterialCommunityIcons, Ionicons, AntDesign } from '@expo/vector-icons';
 import i18n from '../i18n';
 import MagicalBackground from '../MagicalBackground';
 import { commonStyles } from './styles';
 import { Card } from '../constants';
+import NumberGrid from './game/NumberGrid';
 
 interface GameScreenProps {
   step: number;
@@ -63,29 +64,7 @@ const GameScreen: React.FC<GameScreenProps> = (props) => {
           </Text>
         </View>
 
-        <View style={styles.cardContainerWrapper}>
-          <ScrollView
-            contentContainerStyle={styles.cardContainer}
-            scrollEventThrottle={16}
-          >
-            {currentCard.numbers.map((number: number) => (
-              <View
-                key={number}
-                style={[
-                  styles.numberBox,
-                  {
-                    width: boxSize,
-                    height: boxSize,
-                    margin: margin,
-                    borderRadius: boxSize / 5,
-                  }
-                ]}
-              >
-                <Text style={[styles.numberText, { fontSize: boxSize * 0.45 }]}>{number}</Text>
-              </View>
-            ))}
-          </ScrollView>
-        </View>
+        <NumberGrid currentCard={currentCard} boxSize={boxSize} margin={margin} />
 
         <View style={styles.bottomActions}>
           <View style={styles.buttonContainer}>
@@ -146,31 +125,6 @@ const styles = StyleSheet.create({
         color: '#EADFFF',
         marginLeft: 8,
         fontSize: 16
-    },
-    cardContainerWrapper: {
-        flex: 1,
-        position: 'relative',
-    },
-    cardContainer: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 5,
-    },
-    numberBox: {
-        backgroundColor: '#E6E6FA',
-        justifyContent: 'center',
-        alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.2,
-        shadowRadius: 1.41,
-        elevation: 2,
-    },
-    numberText: {
-        fontWeight: '600',
-        color: '#4B0082',
     },
     bottomActions: {
         paddingVertical: 20,
