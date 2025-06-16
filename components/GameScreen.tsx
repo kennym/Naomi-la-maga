@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, SafeAreaView, useWindowDimensions, Text, TouchableOpacity, ScrollView, Platform, LayoutChangeEvent } from 'react-native';
+import { View, StyleSheet, SafeAreaView, Text, TouchableOpacity, ScrollView, Platform } from 'react-native';
 import { MaterialCommunityIcons, Ionicons, AntDesign } from '@expo/vector-icons';
 import i18n from '../i18n';
 import MagicalBackground from '../MagicalBackground';
@@ -10,15 +10,10 @@ interface GameScreenProps {
   step: number;
   cards: Card[];
   isSmallScreen: boolean;
-  autoScrollEnabled: boolean;
-  scrollViewRef: React.RefObject<ScrollView | null>;
   boxSize: number;
   margin: number;
   onAnswer: (yes: boolean) => void;
   onRestart: () => void;
-  toggleAutoScroll: () => void;
-  handleContentSizeChange: (width: number, height: number) => void;
-  handleLayout: (event: LayoutChangeEvent) => void;
   onLinkPress: () => void;
 }
 
@@ -27,16 +22,11 @@ const GameScreen: React.FC<GameScreenProps> = (props) => {
         step,
         cards,
         isSmallScreen,
-        autoScrollEnabled,
-        scrollViewRef,
         boxSize,
         margin,
         onAnswer,
         onRestart,
-        toggleAutoScroll,
-        handleContentSizeChange,
-        handleLayout,
-        onLinkPress
+        onLinkPress,
     } = props;
 
   const currentCard: Card = cards[step];
@@ -47,14 +37,6 @@ const GameScreen: React.FC<GameScreenProps> = (props) => {
       <View style={commonStyles.contentWrapper}>
         <View style={styles.topBar}>
           <View style={styles.topLeftControls}>
-            {Platform.OS === 'web' && (
-              <TouchableOpacity onPress={toggleAutoScroll} style={styles.controlButton}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Ionicons name={autoScrollEnabled ? "pause-circle" : "play-circle"} size={28} color="#EADFFF" />
-                  {!isSmallScreen && <Text style={styles.controlButtonText}>Autoscroll {autoScrollEnabled ? 'on' : 'off'}</Text>}
-                </View>
-              </TouchableOpacity>
-            )}
             {step > 0 && (
               <TouchableOpacity onPress={onRestart} style={styles.controlButton}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -83,10 +65,7 @@ const GameScreen: React.FC<GameScreenProps> = (props) => {
 
         <View style={styles.cardContainerWrapper}>
           <ScrollView
-            ref={scrollViewRef}
             contentContainerStyle={styles.cardContainer}
-            onContentSizeChange={handleContentSizeChange}
-            onLayout={handleLayout}
             scrollEventThrottle={16}
           >
             {currentCard.numbers.map((number: number) => (
